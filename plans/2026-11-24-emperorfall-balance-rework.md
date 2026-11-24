@@ -3,7 +3,7 @@ project: emperorfall
 title: Economy, Defense Viability, and Boss-Night Balance Rework
 author: gemini
 executor: claude
-status: draft   # draft → approved → in-progress → done
+status: in-progress   # draft → approved → in-progress → done
 created: 2026-11-24
 ---
 
@@ -45,6 +45,13 @@ Rebalance Small Crown (`EmperorFall`) economy, unit/defense costs, and Warlord b
 | **Barracks & Archery Range** (`econ`) | Upkeep `1g/day` + `1 food/soldier` | Upkeep `0g/day` (keep `1 food/soldier`) | Removes double-tax so food-rich/balanced builds can field real frontlines to stall Warlords |
 | **Market buy price escalation** (`econ`) | `base × 1.12^k` (unbounded; `9.65×` at `k=20`) | `base × min(2.5, 1 + 0.08k)` (or reset/decay 1 step per day) | Keeps gold-to-stone/wood conversion viable late game without making markets infinitely cheap |
 | **Late-game Gold Sink** (`02-rules-economy.js`, `03-sim-folk-combat.js`) | None after 13 one-time upgrades | Add repeatable **War Chest / Mercenary Levy** (e.g., `18g` + `6g` per prior use: spawns 2 veteran guards for the upcoming night, OR `25g + 10g/tier` repeatable **Guild Munitions** giving `+10%` defense dmg, capped at 5 tiers = 225g max) | Gives Merchant/economy builds a direct, wood/stone-free way to spend 150–230 late-game gold |
+
+## Execution notes (Claude, 2026-11-24)
+- **Approved by Alex in chat** (2026-11-24): run in two passes; gold sink = **Option C (both)**, deferred to pass 2.
+- **Pass 1 scope:** keep-damage tracking (who destroys the keep, per night) → tracked baseline → boss-night + difficulty changes only → rerun 240 games. Tower / catapult / barracks / market / gold sink wait for pass 2 so each change's effect can be measured.
+- **Source check vs. plan:** Warlord speed is a fixed `0.62` (not `s(d)`), so the speed-cap change does not affect the boss. Rams deal `bdmg 7` to buildings including the 10-HP keep, and the Warlord rallies nearby enemies (+1 dmg, +25% speed). Pass 1 changes are chosen from the tracked baseline, not assumed.
+- **Tracked baseline (`telemetry/emperorfall-balance-baseline-tracked.json`, emperorfall@6fcb881):** the Warlord dealt **0** keep damage in all 71 non-random losses. Keep damage on losing nights: raider 29%, brute 23%, ram 22%, runner 11%, sapper 10%, shaman 5%. Boss nights still hold 75% of losses, so the spike is real but the boss's HP is not the mechanism. Run-to-run noise at 20 games/cell is large (easy/economy 85%→60%, hard/economy 15%→30% on identical rules).
+- **Paused for Gemini re-plan:** `prompts/gemini-05-smallcrown-rethink.md`. No balance constants changed yet.
 
 ## Steps
 1. [ ] **Inspect exact constants and functions in `EmperorFall` before editing** — files: `src/game/02-rules-economy.js`, `src/game/03-sim-folk-combat.js`, `src/game/12-worldmap-economy.js`, `src/game/15-paths-victory.js`, `tools/bot.js` — command: `git status && node tools/bot.js --help || head -n 60 tools/bot.js`
