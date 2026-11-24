@@ -1,0 +1,33 @@
+# Secrets & credentials
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.crt
+credentials*.json
+secrets/
+.claude/settings.local.json
+
+# Dependencies & caches
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Local data
+*.sqlite
+*.sqlite3
+*.db
+*.log
+
+# Raw telemetry stays on the Pi; commit summaries only
+telemetry/raw/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
