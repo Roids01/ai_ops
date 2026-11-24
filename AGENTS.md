@@ -11,11 +11,13 @@ These rules apply to **every** AI agent working in this hub or in any project re
 
 These are *lead* roles, not walls. Either model may plan or execute; the handoff protocol below is what keeps work coordinated.
 
+- **Browser-session fallback:** When an agent operates in a read-only web session without local git write access (e.g. Gemini in the browser), it outputs the complete plan or `STATE.md` row in a fenced Markdown block labeled with its target file path. Alex relays it to Claude Code, which saves, commits, and pushes it unchanged (apart from fixing formatting).
+
 ### Handoff protocol
-1. **Plan** — The planning model writes `plans/YYYY-MM-DD-<project>-<slug>.md` from `plans/_TEMPLATE.md`, with `status: draft`.
-2. **Approve** — Alex reviews and changes the status to `approved` (or edits it).
+1. **Plan / Audit** — The planning model writes `plans/YYYY-MM-DD-<project>-<slug>.md` (or `-audit.md` for read-only audits) from `plans/_TEMPLATE.md`, with `status: draft` and `executor: <claude | gemini | none>`.
+2. **Approve** — Alex approves either by changing `status: approved` in the plan file or by approving directly in chat (in which case the executing model updates `status` in the same commit where it sets `status: in-progress`).
 3. **Execute** — The executing model sets `status: in-progress`, works through the steps, and checks each acceptance check.
-4. **Close** — Set `status: done`, add a short results section (metrics, commit hashes), and update `STATE.md`.
+4. **Close** — Push all target project-repo commits first; then in `ai_ops` set `status: done`, record repo-prefixed commit hashes (e.g., `emperorfall@abc1234`, `ai_ops@def5678`) and metrics in `## Results`, and update `STATE.md`.
 
 Never execute a plan that is still `draft` unless Alex says so directly.
 
@@ -30,6 +32,7 @@ Never execute a plan that is still `draft` unless Alex says so directly.
 ## 4. Context hygiene
 - **Do not dump large binary or JSON asset blobs into context** (map data, tilesets, model weights, sprite sheets, save files, large CSVs).
 - Inspect them with targeted tools (`head`, `jq` paths, `wc`, schema summaries) and quote only the parts needed.
+- **Telemetry cap:** Files committed to `telemetry/` must be aggregated summaries (`<project>-<metric>.csv` or `.json`, max 100 KB per file) with column headers and timestamps; keep raw run logs local or gitignored (`telemetry/raw/`).
 
 ## 5. STATE.md is shared
 - Every agent **updates `STATE.md` after every completed task**: Current Focus, Last Metric, Next Action, and the date.

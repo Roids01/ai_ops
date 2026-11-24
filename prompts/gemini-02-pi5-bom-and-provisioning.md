@@ -1,7 +1,7 @@
 # Gemini Prompt 02 — Pi 5 BOM & Provisioning Plan
 
 ```
-Following AGENTS.md and GEMINI.md in Roids01/ai_ops, write a plan at
+Following AGENTS.md and GEMINI.md in Roids01/ai_ops, output a plan as one fenced Markdown block for
 plans/2026-11-24-pi5-homelab-bom-and-provisioning.md using plans/_TEMPLATE.md (status: draft, executor: claude).
 
 Context: I'm picking up a Raspberry Pi 5 tomorrow. It will be the always-on execution box for this hub: running Claude Code over SSH, long simulation sweeps (e.g. plasmodium-atlas) in tmux, and data collectors that feed telemetry/. It replaces an earlier Pi 4 dashboard idea (Telegram bot + multi-source collectors).

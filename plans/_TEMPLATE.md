@@ -2,7 +2,7 @@
 project: <plasmodium-atlas | emperorfall | pi5-homelab | ...>
 title: <short title>
 author: <gemini | claude>
-executor: <claude | gemini>
+executor: <claude | gemini | none>   # none = read-only audit
 status: draft   # draft → approved → in-progress → done
 created: YYYY-MM-DD
 ---

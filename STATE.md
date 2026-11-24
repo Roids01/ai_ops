@@ -1,6 +1,6 @@
 # STATE.md — Mission Control Status Board
 
-_Last updated: 2026-11-24 by Claude Code_
+_Last updated: 2026-11-24 by Claude Code (applied Gemini's onboarding review of AGENTS.md)_
 
 | Project | Current Focus | Last Metric | Next Action | Owner | Updated |
 |---|---|---|---|---|---|
